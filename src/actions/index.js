@@ -1,5 +1,6 @@
 import axios from "axios";
-import { FETCH_USER } from "./types";
+import { setCookie } from "../utils/cookies";
+import { SERVER_STATUS } from "./types";
 
 export const submitLogin_a = (
   { email, password },
@@ -10,11 +11,15 @@ export const submitLogin_a = (
   );
 
   if (!res.data) {
-    //something went wrong
+    dispatch({ type: SERVER_STATUS, payload: "error" });
   } else if (res.data.result.token) {
-    history.push("/dashboard");
-    dispatch({ type: FETCH_USER, payload: res.data.token });
+    setCookie("user", res.data.result.token, 7);
+    setTimeout(() => {
+      history.push("/");
+    }, 1500);
+
+    dispatch({ type: SERVER_STATUS, payload: "done" });
   } else {
-    //wrong password
+    dispatch({ type: SERVER_STATUS, payload: "wrong" });
   }
 };
