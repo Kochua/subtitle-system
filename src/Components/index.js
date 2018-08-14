@@ -1,3 +1,3 @@
 import Form from "./Form";
-
-export { Form };
+import Table from "./Table";
+export { Form, Table };
