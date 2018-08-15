@@ -9,6 +9,8 @@ injectGlobal`
         box-sizing: border-box;
     }
 
+    button:focus {outline:0;}
+
 
     body {
         position: relative;

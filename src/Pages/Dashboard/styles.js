@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
+export const TabsWrapper = styled.div``;
+
 export const TablesWrapper = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  margin-top: 200px;
-  padding: 5px;
+  margin-top: 2px;
 `;
 
 export const TableContainer = styled.div`
-  flex: 0 0 48%;
+  min-width: 100%;
+  flex: 1;
 `;

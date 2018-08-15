@@ -1,79 +1,96 @@
 import React, { Fragment } from "react";
-import _ from "lodash";
-import Flag from "react-world-flags";
+import PropTypes from "prop-types";
 
-const renderLangs = langs => {
-  const langsName = [];
-  //IF lang's key (en,it,ru...) is 0 show me
-  _.forEach(langs, (value, key) => {
-    if (value === 0) {
-      langsName.push(key);
-    }
-  });
+import RenderHeaders from "./RenderHeaders";
+import RenderLangs from "./RenderLangs";
 
-  return langsName.map(lang => {
+const renderMovies = items => {
+  return items.map((item, i) => {
     return (
-      <span key={lang} style={{ display: "inline-block", marginRight: 5 }}>
-        <Flag code={lang} height="16" />
-      </span>
+      <tr key={i++}>
+        <th scope="row">{i}</th>
+        <td>
+          <a href={`https://www.imdb.com/title/${item.id}`}>
+            <img
+              style={{ width: 50, height: "auto" }}
+              src={item.poster}
+              alt="poster"
+            />
+          </a>
+        </td>
+        <td>{item.title}</td>
+        <td>{item.filename}</td>
+        <td style={{ display: "flex" }}>
+          <RenderLangs langs={item.lang} />
+        </td>
+      </tr>
     );
   });
 };
 
-const renderTD = items => {
+const renderSerials = items => {
+  return items.map((item, i) => {
+    return (
+      <tr key={i++}>
+        <th scope="row">{i}</th>
+        <td>
+          <a href={`https://www.imdb.com/title/${item.id}`}>
+            <img
+              style={{ width: 50, height: "auto" }}
+              src={item.poster}
+              alt="poster"
+            />
+          </a>
+        </td>
+        <td>{item.title}</td>
+        <td>
+          {item.content.map(c => {
+            return (
+              <Fragment>
+                {c.season} <br key={c.season} />
+              </Fragment>
+            );
+          })}
+        </td>
+      </tr>
+    );
+  });
+};
+
+const renderBody = (items, type) => {
   if (items) {
-    return items.map((item, i) => {
-      return (
-        <tr key={i++}>
-          <th scope="row">{i}</th>
-          <td>
-            <a href={`https://www.imdb.com/title/${item.id}`}>
-              <img
-                style={{ width: 50, height: "auto" }}
-                src={item.poster}
-                alt="poster"
-              />
-            </a>
-          </td>
-          <td>{item.title}</td>
-          {item.season && <td>{item.season}</td>}
-          {item.episode && <td>{item.episode}</td>}
-          <td>{item.filename}</td>
-          <td style={{ display: "flex" }}>{renderLangs(item.lang)}</td>
-        </tr>
-      );
-    });
+    if (type === "movie") {
+      return renderMovies(items);
+    } else if (type === "serial") {
+      return renderSerials(items);
+    } else {
+      console.error("Wrong type defined");
+    }
   }
 };
 
-const renderTH = titles => {
-  return (
-    <Fragment>
-      <th scope="col">#</th>
-      {titles.map(title => (
-        <th key={title} scope="col">
-          {title}
-        </th>
-      ))}
-    </Fragment>
-  );
-};
-
 //MAIN
-const Table = ({ titles, body }) => {
+const Table = ({ titles, body, type }) => {
   return (
     <table className="table table-striped">
       <thead className="thead-dark">
-        <tr>{renderTH(titles)}</tr>
+        <tr>
+          <RenderHeaders titles={titles} />
+        </tr>
       </thead>
-      <tbody>{renderTD(body)}</tbody>
+      <tbody>{renderBody(body, type)}</tbody>
     </table>
   );
 };
 
 Table.defaultProps = {
-  body: [],
-  titles: []
+  type: "movie"
+};
+
+Table.propTypes = {
+  body: PropTypes.array.isRequired,
+  titles: PropTypes.array.isRequired,
+  type: PropTypes.string
 };
 
 export default Table;
