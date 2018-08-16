@@ -40,7 +40,7 @@ class Dashboard extends Component {
   render() {
     const { tables, classes } = this.props;
     const { value } = this.state;
-    console.log(tables);
+
     return (
       <div>
         <TabsWrapper>

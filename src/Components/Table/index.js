@@ -29,6 +29,8 @@ const renderMovies = items => {
 };
 
 const renderSerials = items => {
+  console.log(items);
+
   return items.map((item, i) => {
     return (
       <tr key={i++}>
@@ -43,14 +45,47 @@ const renderSerials = items => {
           </a>
         </td>
         <td>{item.title}</td>
-        <td>
-          {item.content.map(c => {
-            return (
-              <Fragment>
-                {c.season} <br key={c.season} />
-              </Fragment>
-            );
-          })}
+        <td>{item.season}</td>
+        <td style={{ padding: 0 }}>
+          <table style={{ width: '100%' }}>
+            <tbody>
+              {item.episodes.map(episode => {
+                return (
+                  <tr key={episode.episodeNum}>
+                    <td>#{episode.episodeNum}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </td>
+        <td style={{ padding: 0 }}>
+          <table style={{ width: '100%' }}>
+            <tbody>
+              {item.episodes.map(episode => {
+                return (
+                  <tr key={episode.episodeNum}>
+                    <td>#{episode.filename}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </td>
+        <td style={{ padding: 0 }}>
+          <table style={{ width: '100%' }}>
+            <tbody>
+              {item.episodes.map(episode => {
+                return (
+                  <tr key={episode.episodeNum}>
+                    <td style={{ display: "flex" }}>
+                      <RenderLangs langs={episode.lang} />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </td>
       </tr>
     );

@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-const mergeAndFilter = (info, array) => {
+const mergeAndFilterMovies = (info, array) => {
   //merge info by movie id
   const mergedMovies = _.merge(array, info);
 
@@ -18,41 +18,41 @@ const mergeAndFilter = (info, array) => {
   return filteredMovies;
 };
 
+const orderTvShowsBySeasons = (info, array) => {
+  const seasonsArr = [];
+
+  Object.keys(array).forEach(theShowId => {
+    Object.keys(array[theShowId]).forEach(seasonNum => {
+      // so every season is pushed to a `seasonsArr`
+      seasonsArr.push({
+        id: theShowId,
+        season: seasonNum,
+        ...info[theShowId],
+        episodes: []
+      });
+      // remember the recently pushed season
+      // so that down we can add episodes to it
+      const recentlyPushedSeason = seasonsArr[seasonsArr.length - 1];
+
+      Object.keys(array[theShowId][seasonNum]).forEach(episodeNum => {
+        const episode = array[theShowId][seasonNum][episodeNum];
+
+        // add episodes to the season
+        recentlyPushedSeason.episodes.push({
+          episodeNum: episodeNum,
+          ...episode,
+        });
+      });
+    });
+  });
+
+  return seasonsArr;
+};
+
 //_.isNumber
 export default ({ info, movie, tv }) => {
-  const movies = mergeAndFilter(info, movie);
-  const filtredSerials = mergeAndFilter(info, tv);
-
-  //make serial.0 to serial.items = [{season:0,episodes:{}},....]
-  const serials = filtredSerials.map(serial => {
-    const arr = [];
-
-    _.forEach(serial, (value, key) => {
-      //if value is object convert his key into (season:0)
-      if (_.isObject(value)) {
-        delete serial[key];
-
-        let episodeObj = value;
-        let episodes = [];
-        //convert objects of object into array
-        _.forEach(episodeObj, (value, key) => {
-          episodes.push({
-            n: key,
-            ...value
-          });
-        });
-
-        arr.push({
-          season: key,
-          episodes
-        });
-      }
-    });
-
-    //create new property and push our new array with seasons and episodes
-    serial.content = arr;
-    return serial;
-  });
+  const movies = mergeAndFilterMovies(info, movie);
+  const serials = orderTvShowsBySeasons(info, tv);
 
   return {
     movies,
