@@ -1,10 +1,12 @@
 import { ADD_TO_UPLOAD } from "../actions/types";
 
-export default function(state = new FormData(), action) {
+export default function (state = new FormData(), action) {
   switch (action.type) {
     case ADD_TO_UPLOAD:
-      return action.payload;
-    default:
-      return state;
+      const { paramName, file } = action.payload;
+      state.append(paramName, file);
+      break;
   }
+
+  return state;
 }
