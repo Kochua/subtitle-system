@@ -58,6 +58,9 @@ class FlagModal extends Component {
   renderPopupContent() {
     const { langs } = this.props
     return langs.map((lang, i) => {
+      if (lang.active) {
+        return
+      }
       return <UploadFile key={i} lang={lang} />
     })
   }
