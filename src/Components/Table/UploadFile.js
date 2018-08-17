@@ -10,7 +10,7 @@ class UploadFile extends Component {
 
     addToUpload_a({
       paramName: `strupload[${lang.code}]`,
-      file: file
+      value: file
     });
   };
 
