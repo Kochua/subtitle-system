@@ -39,6 +39,6 @@ export const getTablesData_a = () => async dispatch => {
 
 //UPLOAD FILES
 
-export const addToUpload_a = file => dispatch => {
-  dispatch({ type: ADD_TO_UPLOAD, payload: file });
+export const addToUpload_a = payload => dispatch => {
+  dispatch({ type: ADD_TO_UPLOAD, payload });
 };

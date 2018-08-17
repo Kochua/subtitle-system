@@ -8,9 +8,11 @@ class UploadFile extends Component {
     const { addToUpload_a, upload, lang } = this.props
     let file = e.target.files[0]
 
-    upload.append("strupload[" + lang.code + "]", file)
-    addToUpload_a(upload)
-  }
+    addToUpload_a({
+      paramName: `strupload[${lang.code}]`,
+      value: file
+    });
+  };
 
   render() {
     const { lang } = this.props
@@ -29,7 +31,7 @@ class UploadFile extends Component {
           style={{ width: 250 }}
           type="file"
           name="file"
-          accept="application/zip"
+          accept=".zip, .srt"
           onChange={e => {
             this.fileUploadHandler(e)
           }}
