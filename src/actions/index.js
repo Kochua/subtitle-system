@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setCookie } from "../utils/cookies";
 import filtredDataForTables_u from "../utils/filtredDataForTables_u";
-import { SERVER_STATUS, FECHT_TABLES } from "./types";
+import { SERVER_STATUS, FECHT_TABLES, ADD_TO_UPLOAD } from "./types";
 
 //LOGIN FORM
 export const submitLogin_a = (
@@ -26,6 +26,7 @@ export const submitLogin_a = (
   }
 };
 
+//GET TABLES DATA
 export const getTablesData_a = () => async dispatch => {
   const res = await axios.get(
     "https://subs.mqg6d2hmcj.club/upload/missing.php"
@@ -34,4 +35,10 @@ export const getTablesData_a = () => async dispatch => {
   const filteredData = filtredDataForTables_u(res.data);
 
   dispatch({ type: FECHT_TABLES, payload: filteredData });
+};
+
+//UPLOAD FILES
+
+export const addToUpload_a = file => dispatch => {
+  dispatch({ type: ADD_TO_UPLOAD, payload: file });
 };

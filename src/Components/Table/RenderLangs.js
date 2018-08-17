@@ -1,21 +1,26 @@
-import React from "react";
-import _ from "lodash";
-import Flag from "react-world-flags";
+import React from "react"
+import _ from "lodash"
+import FlagModal from "./FlagModal"
 
-export default ({ langs }) => {
-  const langsName = [];
+//Props:Index.js
+
+const RenderLangs = ({ langs, data, type }) => {
+  const filtredLangs = []
   //IF lang's key (en,it,ru...) is 0 show me
   _.forEach(langs, (value, key) => {
-    if (value === 0) {
-      langsName.push(key);
+    if (key === "en") {
+      filtredLangs.push({ code: "gb", active: value })
+    } else if (key === "he") {
+      filtredLangs.push({ code: "il", active: value })
+    } else {
+      filtredLangs.push({ code: key, active: value })
     }
-  });
+  })
+  return <FlagModal type={type} fileName={data} langs={filtredLangs} />
+}
 
-  return langsName.map(lang => {
-    return (
-      <span key={lang} style={{ display: "inline-block", marginRight: 5 }}>
-        <Flag code={lang} height="16" />
-      </span>
-    );
-  });
-};
+RenderLangs.defaultProps = {
+  data: ""
+}
+
+export default RenderLangs

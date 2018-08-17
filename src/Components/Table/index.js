@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
-import PropTypes from "prop-types";
+import React from "react"
+import PropTypes from "prop-types"
 
-import RenderHeaders from "./RenderHeaders";
-import RenderLangs from "./RenderLangs";
+import RenderHeaders from "./RenderHeaders"
+import RenderLangs from "./RenderLangs"
 
 const renderMovies = items => {
   return items.map((item, i) => {
@@ -24,13 +24,11 @@ const renderMovies = items => {
           <RenderLangs langs={item.lang} />
         </td>
       </tr>
-    );
-  });
-};
+    )
+  })
+}
 
-const renderSerials = items => {
-  console.log(items);
-
+const renderSerials = (items, type) => {
   return items.map((item, i) => {
     return (
       <tr key={i++}>
@@ -47,62 +45,66 @@ const renderSerials = items => {
         <td>{item.title}</td>
         <td>{item.season}</td>
         <td style={{ padding: 0 }}>
-          <table style={{ width: '100%' }}>
+          <table style={{ width: "100%" }}>
             <tbody>
               {item.episodes.map(episode => {
                 return (
                   <tr key={episode.episodeNum}>
                     <td>#{episode.episodeNum}</td>
                   </tr>
-                );
+                )
               })}
             </tbody>
           </table>
         </td>
         <td style={{ padding: 0 }}>
-          <table style={{ width: '100%' }}>
+          <table style={{ width: "100%" }}>
             <tbody>
               {item.episodes.map(episode => {
                 return (
                   <tr key={episode.episodeNum}>
                     <td>#{episode.filename}</td>
                   </tr>
-                );
+                )
               })}
             </tbody>
           </table>
         </td>
         <td style={{ padding: 0 }}>
-          <table style={{ width: '100%' }}>
+          <table style={{ width: "100%" }}>
             <tbody>
               {item.episodes.map(episode => {
                 return (
                   <tr key={episode.episodeNum}>
                     <td style={{ display: "flex" }}>
-                      <RenderLangs langs={episode.lang} />
+                      <RenderLangs
+                        type={type}
+                        data={episode.filename}
+                        langs={episode.lang}
+                      />
                     </td>
                   </tr>
-                );
+                )
               })}
             </tbody>
           </table>
         </td>
       </tr>
-    );
-  });
-};
+    )
+  })
+}
 
 const renderBody = (items, type) => {
   if (items) {
     if (type === "movie") {
-      return renderMovies(items);
+      return renderMovies(items, type)
     } else if (type === "serial") {
-      return renderSerials(items);
+      return renderSerials(items, type)
     } else {
-      console.error("Wrong type defined");
+      console.error("Wrong type defined")
     }
   }
-};
+}
 
 //MAIN
 const Table = ({ titles, body, type }) => {
@@ -113,19 +115,19 @@ const Table = ({ titles, body, type }) => {
           <RenderHeaders titles={titles} />
         </tr>
       </thead>
-      <tbody>{renderBody(body, type)}</tbody>
+      <tbody>{body && renderBody(body, type)}</tbody>
     </table>
-  );
-};
+  )
+}
 
 Table.defaultProps = {
   type: "movie"
-};
+}
 
 Table.propTypes = {
   body: PropTypes.array.isRequired,
   titles: PropTypes.array.isRequired,
   type: PropTypes.string
-};
+}
 
-export default Table;
+export default Table
