@@ -109,14 +109,16 @@ const renderBody = (items, type) => {
 //MAIN
 const Table = ({ titles, body, type }) => {
   return (
-    <table className="table table-striped">
-      <thead className="thead-dark">
-        <tr>
-          <RenderHeaders titles={titles} />
-        </tr>
-      </thead>
-      <tbody>{body && renderBody(body, type)}</tbody>
-    </table>
+    <div>
+      <table className="table table-striped">
+        <thead className="thead-dark">
+          <tr>
+            <RenderHeaders titles={titles} />
+          </tr>
+        </thead>
+        <tbody>{renderBody(body, type)}</tbody>
+      </table>
+    </div>
   )
 }
 

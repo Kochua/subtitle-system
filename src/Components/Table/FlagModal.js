@@ -58,12 +58,16 @@ class FlagModal extends Component {
   renderPopupContent() {
     const { langs } = this.props
     return langs.map((lang, i) => {
+      if (lang.active) {
+        return []
+      }
       return <UploadFile key={i} lang={lang} />
     })
   }
 
   uploadHandler = () => {
     const { upload, tables, fileName, type } = this.props
+
     if (type === "serial") {
       const { userToken, imbdID, episode, season } = findByFilename(
         tables,

@@ -1,45 +1,45 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Paper from "@material-ui/core/Paper";
-import * as actions from "../../actions";
-import { getCookie } from "../../utils/cookies";
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
+import { withStyles } from "@material-ui/core/styles"
+import Tabs from "@material-ui/core/Tabs"
+import Tab from "@material-ui/core/Tab"
+import Paper from "@material-ui/core/Paper"
+import * as actions from "../../actions"
+import { getCookie } from "../../utils/cookies"
 
-import { TablesWrapper, TableContainer, TabsWrapper } from "./styles";
-import Movies from "./Movies";
-import Serials from "./Serials";
+import { TablesWrapper, TableContainer, TabsWrapper } from "./styles"
+import Movies from "./Movies"
+import Serials from "./Serials"
 
 const styles = {
   root: {
     flexGrow: 1
   }
-};
+}
 
 class Dashboard extends Component {
   state = {
     value: 0
-  };
+  }
 
   componentDidMount() {
     //Check if user exists
-    const user = getCookie("user");
+    const user = getCookie("user")
     if (!user) {
-      this.props.history.push("/login");
+      this.props.history.push("/login")
     }
     //get data
-    this.props.getTablesData_a();
+    this.props.getTablesData_a()
   }
 
   handleChange = (event, value) => {
-    this.setState({ value });
-  };
+    this.setState({ value })
+  }
 
   render() {
-    const { tables, classes } = this.props;
-    const { value } = this.state;
+    const { tables, classes } = this.props
+    const { value } = this.state
 
     return (
       <div>
@@ -63,29 +63,27 @@ class Dashboard extends Component {
           </Paper>
         </TabsWrapper>
         <TablesWrapper>
-          {value === 0 &&
-            tables.movies && (
-              <TableContainer>
-                <Movies data={tables.movies} />
-              </TableContainer>
-            )}
-          {value === 1 &&
-            tables.serials && (
-              <TableContainer>
-                <Serials data={tables.serials} />
-              </TableContainer>
-            )}
+          {value === 0 && (
+            <TableContainer>
+              <Movies data={tables.movies} />
+            </TableContainer>
+          )}
+          {value === 1 && (
+            <TableContainer>
+              <Serials data={tables.serials} />
+            </TableContainer>
+          )}
         </TablesWrapper>
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = ({ tables }) => {
-  return { tables };
-};
+  return { tables }
+}
 
 export default connect(
   mapStateToProps,
   actions
-)(withRouter(withStyles(styles)(Dashboard)));
+)(withRouter(withStyles(styles)(Dashboard)))
