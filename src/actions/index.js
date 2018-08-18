@@ -1,7 +1,12 @@
-import axios from "axios";
-import { setCookie } from "../utils/cookies";
-import filtredDataForTables_u from "../utils/filtredDataForTables_u";
-import { SERVER_STATUS, FECHT_TABLES, ADD_TO_UPLOAD } from "./types";
+import axios from "axios"
+import { setCookie } from "../utils/cookies"
+import filtredDataForTables_u from "../utils/filtredDataForTables_u"
+import {
+  SERVER_STATUS,
+  FECHT_TABLES,
+  ADD_TO_UPLOAD,
+  REMOVE_UPLOAD_FILE
+} from "./types"
 
 //LOGIN FORM
 export const submitLogin_a = (
@@ -10,35 +15,38 @@ export const submitLogin_a = (
 ) => async dispatch => {
   const res = await axios.get(
     `https://subs.mqg6d2hmcj.club/upload/login.php?email=${email}&password=${password}`
-  );
+  )
 
   if (!res.data) {
-    dispatch({ type: SERVER_STATUS, payload: "error" });
+    dispatch({ type: SERVER_STATUS, payload: "error" })
   } else if (res.data.result.token) {
-    setCookie("user", res.data.result.token, 7);
+    setCookie("user", res.data.result.token, 7)
     setTimeout(() => {
-      history.push("/");
-    }, 1500);
+      history.push("/")
+    }, 1500)
 
-    dispatch({ type: SERVER_STATUS, payload: "done" });
+    dispatch({ type: SERVER_STATUS, payload: "done" })
   } else {
-    dispatch({ type: SERVER_STATUS, payload: "wrong" });
+    dispatch({ type: SERVER_STATUS, payload: "wrong" })
   }
-};
+}
 
 //GET TABLES DATA
 export const getTablesData_a = () => async dispatch => {
-  const res = await axios.get(
-    "https://subs.mqg6d2hmcj.club/upload/missing.php"
-  );
+  const res = await axios.get("https://subs.mqg6d2hmcj.club/upload/missing.php")
 
-  const filteredData = filtredDataForTables_u(res.data);
+  const filteredData = filtredDataForTables_u(res.data)
 
-  dispatch({ type: FECHT_TABLES, payload: filteredData });
-};
+  dispatch({ type: FECHT_TABLES, payload: filteredData })
+}
 
 //UPLOAD FILES
 
 export const addToUpload_a = file => dispatch => {
-  dispatch({ type: ADD_TO_UPLOAD, payload: file });
-};
+  dispatch({ type: ADD_TO_UPLOAD, payload: file })
+}
+
+export const clearUploadFile_a = () => dispatch => {
+  const fd = new FormData()
+  dispatch({ type: REMOVE_UPLOAD_FILE, payload: fd })
+}

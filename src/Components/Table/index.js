@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import RenderHeaders from "./RenderHeaders"
 import RenderLangs from "./RenderLangs"
 
-const renderMovies = items => {
+const renderMovies = (items, type) => {
   return items.map((item, i) => {
     return (
       <tr key={i++}>
@@ -21,7 +21,7 @@ const renderMovies = items => {
         <td>{item.title}</td>
         <td>{item.filename}</td>
         <td style={{ display: "flex" }}>
-          <RenderLangs langs={item.lang} />
+          <RenderLangs type={type} data={item.filename} langs={item.lang} />
         </td>
       </tr>
     )

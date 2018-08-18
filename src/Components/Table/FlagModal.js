@@ -27,6 +27,8 @@ class FlagModal extends Component {
 
   handleClose = () => {
     this.setState({ open: false })
+    //reset upload file
+    this.props.clearUploadFile_a()
   }
 
   renderLangs() {
@@ -59,7 +61,7 @@ class FlagModal extends Component {
     const { langs } = this.props
     return langs.map((lang, i) => {
       if (lang.active) {
-        return
+        return ""
       }
       return <UploadFile key={i} lang={lang} />
     })
@@ -67,27 +69,30 @@ class FlagModal extends Component {
 
   uploadHandler = () => {
     const { upload, tables, fileName, type } = this.props
-    if (type === "serial") {
-      const { userToken, imbdID, episode, season } = findByFilename(
-        tables,
-        fileName,
-        type
-      )
-      upload.append("token", userToken)
-      upload.append("imdb", imbdID)
-      upload.append("season", season)
-      upload.append("episode", episode)
-    } else {
-      const { userToken, imbdID } = findByFilename(tables, fileName, type)
-      upload.append("token", userToken)
-      upload.append("imdb", imbdID)
-    }
+    if (upload) {
+      if (type === "serial") {
+        const { userToken, imbdID, episode, season } = findByFilename(
+          tables,
+          fileName,
+          type
+        )
+        upload.append("token", userToken)
+        upload.append("imdb", imbdID)
+        upload.append("season", season)
+        upload.append("episode", episode)
+      } else {
+        const { userToken, imbdID } = findByFilename(tables, fileName, type)
 
-    //upload ready for post
-    this.setState({ success: true })
-    setTimeout(() => {
-      this.handleClose()
-    }, 1500)
+        upload.append("token", userToken)
+        upload.append("imdb", imbdID)
+      }
+      console.log("Ready for post", ...upload)
+      //upload ready for post
+      this.setState({ success: true })
+      setTimeout(() => {
+        this.handleClose()
+      }, 1500)
+    }
   }
 
   render() {

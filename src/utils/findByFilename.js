@@ -3,7 +3,6 @@ import { getCookie } from "./cookies"
 export default (array, fileName, type) => {
   const userToken = getCookie("user")
   let data = []
-  console.log(array)
   //create data for file info in one object
   //if serial NEED {userToken:'sds',imbdId:'tt33e3',episode:'2',season:'1'}
   if (type === "serial") {
@@ -33,6 +32,6 @@ export default (array, fileName, type) => {
       return ""
     })
   }
-
+  console.log(data)
   return data
 }
