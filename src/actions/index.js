@@ -50,3 +50,12 @@ export const clearUploadFile_a = () => dispatch => {
   const fd = new FormData()
   dispatch({ type: REMOVE_UPLOAD_FILE, payload: fd })
 }
+
+export const uploadToServer_a = file => async dispatch => {
+  console.log("FILE: ", ...file)
+  const res = await axios.post("https://subs.mqg6d2hmcj.club/upload", file)
+
+  console.log(res)
+
+  dispatch({ type: SERVER_STATUS, payload: "done" })
+}

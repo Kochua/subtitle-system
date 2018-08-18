@@ -68,7 +68,7 @@ class FlagModal extends Component {
   }
 
   uploadHandler = () => {
-    const { upload, tables, fileName, type } = this.props
+    const { upload, tables, fileName, type, uploadToServer_a } = this.props
     if (upload) {
       if (type === "serial") {
         const { userToken, imbdID, episode, season } = findByFilename(
@@ -86,7 +86,8 @@ class FlagModal extends Component {
         upload.append("token", userToken)
         upload.append("imdb", imbdID)
       }
-      console.log("Ready for post", ...upload)
+
+      uploadToServer_a(upload)
       //upload ready for post
       this.setState({ success: true })
       setTimeout(() => {
