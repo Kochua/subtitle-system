@@ -17,20 +17,41 @@ function Transition(props) {
 class FlagModal extends Component {
   state = {
     open: false,
-    success: false
+    loading: false,
+    isActivBtn: true
   }
 
   handleClickOpen = () => {
+    //reset depenencies
     this.setState({ open: true })
-    this.setState({ success: false })
+    this.setState({ loading: false })
+    this.setState({ isActivBtn: true })
+    this.props.clearServerStatus_a()
   }
 
   handleClose = () => {
     this.setState({ open: false })
-    //reset upload file
     this.props.clearUploadFile_a()
   }
+  makeBtnActive = () => {
+    this.setState({ isActivBtn: false })
+  }
 
+  //serer anwer rendering
+  renderServerStatus(serverMsg) {
+    if (serverMsg === "done") {
+      return <div style={{ color: "green" }}>Files uploaded succesfully!</div>
+    } else if (serverMsg === "wrong") {
+      return (
+        <div style={{ color: "red" }}>
+          Files didnt uploaded try again or later!
+        </div>
+      )
+    } else {
+      console.error("someting went wrong")
+    }
+  }
+  //render flags in table
   renderLangs() {
     const { langs } = this.props
     return langs.map(lang => {
@@ -57,19 +78,25 @@ class FlagModal extends Component {
     })
   }
 
+  //RENDER CONTENT IN MODAL
   renderPopupContent() {
     const { langs } = this.props
     return langs.map((lang, i) => {
       if (lang.active) {
         return ""
       }
-      return <UploadFile key={i} lang={lang} />
+      return (
+        <UploadFile makeBtnActive={this.makeBtnActive} key={i} lang={lang} />
+      )
     })
   }
 
+  //AFTER BUTTON CLICK POST
   uploadHandler = () => {
     const { upload, tables, fileName, type, uploadToServer_a } = this.props
-    if (upload) {
+    const [isFileExist] = upload
+
+    if (isFileExist) {
       if (type === "serial") {
         const { userToken, imbdID, episode, season } = findByFilename(
           tables,
@@ -89,14 +116,17 @@ class FlagModal extends Component {
 
       uploadToServer_a(upload)
       //upload ready for post
-      this.setState({ success: true })
+      this.setState({ loading: true })
       setTimeout(() => {
         this.handleClose()
       }, 1500)
+    } else {
     }
   }
 
   render() {
+    const { serverMsg } = this.props
+    const { loading, isActivBtn } = this.state
     return (
       <Fragment>
         {this.renderLangs()}
@@ -104,12 +134,10 @@ class FlagModal extends Component {
           open={this.state.open}
           TransitionComponent={Transition}
           onClose={this.handleClose}
-          aria-labelledby="alert-dialog-slide-title"
-          aria-describedby="alert-dialog-slide-description"
         >
           <ModalWrapper>
-            {this.state.success ? (
-              <div>Uploaded Sucesffuly!</div>
+            {serverMsg ? (
+              this.renderServerStatus(serverMsg)
             ) : (
               <Fragment>
                 {this.renderPopupContent()}
@@ -120,8 +148,9 @@ class FlagModal extends Component {
                     }}
                     className="btn btn-primary"
                     style={{ marginBottom: -10 }}
+                    disabled={isActivBtn}
                   >
-                    Upload
+                    {loading ? "Loading..." : "Upload"}
                   </button>
                 </div>
               </Fragment>
@@ -133,8 +162,8 @@ class FlagModal extends Component {
   }
 }
 
-const mapStateToProps = ({ upload, tables }) => {
-  return { upload, tables }
+const mapStateToProps = ({ upload, tables, serverMsg }) => {
+  return { upload, tables, serverMsg }
 }
 
 export default connect(

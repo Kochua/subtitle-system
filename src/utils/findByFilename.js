@@ -32,6 +32,5 @@ export default (array, fileName, type) => {
       return ""
     })
   }
-  console.log(data)
   return data
 }

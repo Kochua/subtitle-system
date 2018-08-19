@@ -31,6 +31,11 @@ export const submitLogin_a = (
   }
 }
 
+//SERVER MSG CLEARING
+export const clearServerStatus_a = () => async dispatch => {
+  dispatch({ type: SERVER_STATUS, payload: undefined })
+}
+
 //GET TABLES DATA
 export const getTablesData_a = () => async dispatch => {
   const res = await axios.get("https://subs.mqg6d2hmcj.club/upload/missing.php")
@@ -52,10 +57,11 @@ export const clearUploadFile_a = () => dispatch => {
 }
 
 export const uploadToServer_a = file => async dispatch => {
-  console.log("FILE: ", ...file)
-  const res = await axios.post("https://subs.mqg6d2hmcj.club/upload", file)
-
-  console.log(res)
-
-  dispatch({ type: SERVER_STATUS, payload: "done" })
+  try {
+    await axios.post("https://subs.mqg6d2hmcj.club/upload/upload.php", file)
+    dispatch({ type: SERVER_STATUS, payload: "done" })
+  } catch (err) {
+    console.error(err)
+    dispatch({ type: SERVER_STATUS, payload: "wrong" })
+  }
 }

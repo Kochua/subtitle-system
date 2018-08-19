@@ -5,11 +5,12 @@ import Flag from "react-world-flags"
 
 class UploadFile extends Component {
   fileUploadHandler = e => {
-    const { addToUpload_a, upload, lang } = this.props
+    const { addToUpload_a, upload, lang, makeBtnActive } = this.props
     let file = e.target.files[0]
 
     upload.append("strupload[" + lang.code + "]", file)
     addToUpload_a(upload)
+    makeBtnActive()
   }
 
   render() {
