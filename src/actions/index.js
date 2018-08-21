@@ -22,7 +22,7 @@ export const submitLogin_a = (
 ) => async dispatch => {
   try {
     const res = await axios.get(
-      `https://subs.${domain}/upload/login.php?email=${email}&password=${password}`
+      `https://${domain}/upload/login.php?email=${email}&password=${password}`
     )
     if (res.data.result.token) {
       setCookie("user", res.data.result.token, 7)
@@ -48,7 +48,7 @@ export const clearServerStatus_a = () => async dispatch => {
 //GET TABLES DATA
 export const getTablesData_a = () => async dispatch => {
   try {
-    const res = await axios.get(`https://subs.${domain}/upload/missing.php`)
+    const res = await axios.get(`https://${domain}/upload/missing.php`)
 
     const filteredData = filtredDataForTables_u(res.data)
     dispatch({ type: FECHT_TABLES, payload: filteredData })
@@ -71,7 +71,7 @@ export const clearUploadFile_a = () => dispatch => {
 
 export const uploadToServer_a = file => async dispatch => {
   try {
-    await axios.post(`https://subs.${domain}/upload/upload.php`, file)
+    await axios.post(`https://${domain}/upload/upload.php`, file)
     dispatch({ type: SERVER_STATUS, payload: "done" })
   } catch (err) {
     console.error(err)
