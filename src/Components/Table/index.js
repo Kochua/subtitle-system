@@ -115,7 +115,7 @@ const Table = ({ titles, body, type }) => {
           <RenderHeaders titles={titles} />
         </tr>
       </thead>
-      <tbody>{body && renderBody(body, type)}</tbody>
+      <tbody>{body ? renderBody(body, type) : <div>No Data</div>}</tbody>
     </table>
   )
 }

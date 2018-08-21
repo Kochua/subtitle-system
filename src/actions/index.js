@@ -1,7 +1,7 @@
 import axios from "axios"
 import { setCookie } from "../utils/cookies"
 import filtredDataForTables_u from "../utils/filtredDataForTables_u"
-import getHostName_u from "../utils/filtredDataForTables_u"
+import getHostName_u from "../utils/getHostName_u"
 import {
   SERVER_STATUS,
   FECHT_TABLES,
@@ -13,7 +13,7 @@ import {
 const domain = getHostName_u()
 
 //test domain
-// const domain = "mqg6d2hmcj.club"
+// const domain = "subs.mqg6d2hmcj.club"
 
 //LOGIN FORM
 export const submitLogin_a = (
@@ -49,7 +49,6 @@ export const clearServerStatus_a = () => async dispatch => {
 export const getTablesData_a = () => async dispatch => {
   try {
     const res = await axios.get(`https://${domain}/upload/missing.php`)
-
     const filteredData = filtredDataForTables_u(res.data)
     dispatch({ type: FECHT_TABLES, payload: filteredData })
   } catch (err) {

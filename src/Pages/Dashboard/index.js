@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component, Fragment } from "react"
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { withStyles } from "@material-ui/core/styles"
@@ -7,6 +7,7 @@ import Tab from "@material-ui/core/Tab"
 import Paper from "@material-ui/core/Paper"
 import * as actions from "../../actions"
 import { getCookie } from "../../utils/cookies"
+import CircularProgress from "@material-ui/core/CircularProgress"
 
 import { TablesWrapper, TableContainer, TabsWrapper } from "./styles"
 import Movies from "./Movies"
@@ -78,18 +79,24 @@ class Dashboard extends Component {
           </Paper>
         </TabsWrapper>
         <TablesWrapper>
-          {value === 0 &&
-            tables.movies && (
-              <TableContainer>
-                <Movies data={tables.movies} />
-              </TableContainer>
-            )}
-          {value === 1 &&
-            tables.serials && (
-              <TableContainer>
-                <Serials data={tables.serials} />
-              </TableContainer>
-            )}
+          {tables ? (
+            <Fragment>
+              {value === 0 && (
+                <TableContainer>
+                  <Movies data={tables.movies} />
+                </TableContainer>
+              )}
+              {value === 1 && (
+                <TableContainer>
+                  <Serials data={tables.serials} />
+                </TableContainer>
+              )}
+            </Fragment>
+          ) : (
+            <div style={{ margin: "30px auto" }}>
+              <CircularProgress size={50} />
+            </div>
+          )}
         </TablesWrapper>
       </div>
     )
