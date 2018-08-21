@@ -1,45 +1,53 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Paper from "@material-ui/core/Paper";
-import * as actions from "../../actions";
-import { getCookie } from "../../utils/cookies";
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
+import { withStyles } from "@material-ui/core/styles"
+import Tabs from "@material-ui/core/Tabs"
+import Tab from "@material-ui/core/Tab"
+import Paper from "@material-ui/core/Paper"
+import * as actions from "../../actions"
+import { getCookie } from "../../utils/cookies"
+import getHostName_u from "../../utils/getHostName_u"
 
-import { TablesWrapper, TableContainer, TabsWrapper } from "./styles";
-import Movies from "./Movies";
-import Serials from "./Serials";
+import { TablesWrapper, TableContainer, TabsWrapper } from "./styles"
+import Movies from "./Movies"
+import Serials from "./Serials"
 
 const styles = {
   root: {
     flexGrow: 1
   }
-};
+}
 
 class Dashboard extends Component {
   state = {
     value: 0
-  };
+  }
 
   componentDidMount() {
     //Check if user exists
-    const user = getCookie("user");
+    const user = getCookie("user")
     if (!user) {
-      this.props.history.push("/login");
+      this.props.history.push("/login")
     }
     //get data
-    this.props.getTablesData_a();
+    this.props.getTablesData_a()
+
+    console.log("HOSTNAME: ", getHostName_u())
   }
 
   handleChange = (event, value) => {
-    this.setState({ value });
-  };
+    this.setState({ value })
+  }
+
+  logoutHandler = () => {
+    document.cookie = "user" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+    window.location = "/"
+  }
 
   render() {
-    const { tables, classes } = this.props;
-    const { value } = this.state;
+    const { tables, classes } = this.props
+    const { value } = this.state
 
     return (
       <div>
@@ -60,6 +68,16 @@ class Dashboard extends Component {
               <Tab label="Movies" />
               <Tab label="TV Shows" />
             </Tabs>
+            <button
+              style={{ position: "absolute", right: 10, top: 5 }}
+              type="button"
+              className="btn btn-dark"
+              onClick={() => {
+                this.logoutHandler()
+              }}
+            >
+              Log Out
+            </button>
           </Paper>
         </TabsWrapper>
         <TablesWrapper>
@@ -77,15 +95,15 @@ class Dashboard extends Component {
             )}
         </TablesWrapper>
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = ({ tables }) => {
-  return { tables };
-};
+  return { tables }
+}
 
 export default connect(
   mapStateToProps,
   actions
-)(withRouter(withStyles(styles)(Dashboard)));
+)(withRouter(withStyles(styles)(Dashboard)))

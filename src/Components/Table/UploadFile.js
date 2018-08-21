@@ -7,8 +7,16 @@ class UploadFile extends Component {
   fileUploadHandler = e => {
     const { addToUpload_a, upload, lang, makeBtnActive } = this.props
     let file = e.target.files[0]
+    let flag = ""
+    if (lang.code === "gb") {
+      flag = "en"
+    } else if (lang.code === "il") {
+      flag = "he"
+    } else {
+      flag = lang.code
+    }
 
-    upload.append("strupload[" + lang.code + "]", file)
+    upload.append("strupload[" + flag + "]", file)
     addToUpload_a(upload)
     makeBtnActive()
   }

@@ -1,6 +1,7 @@
 import axios from "axios"
 import { setCookie } from "../utils/cookies"
 import filtredDataForTables_u from "../utils/filtredDataForTables_u"
+import getHostName_u from "../utils/filtredDataForTables_u"
 import {
   SERVER_STATUS,
   FECHT_TABLES,
@@ -8,26 +9,34 @@ import {
   REMOVE_UPLOAD_FILE
 } from "./types"
 
+//DOMAIN NAME
+// const domain = getHostName_u()
+
+//test domain
+const domain = "mqg6d2hmcj.club"
+
 //LOGIN FORM
 export const submitLogin_a = (
   { email, password },
   history
 ) => async dispatch => {
-  const res = await axios.get(
-    `https://subs.mqg6d2hmcj.club/upload/login.php?email=${email}&password=${password}`
-  )
+  try {
+    const res = await axios.get(
+      `https://subs.${domain}/upload/login.php?email=${email}&password=${password}`
+    )
+    if (res.data.result.token) {
+      setCookie("user", res.data.result.token, 7)
+      setTimeout(() => {
+        history.push("/")
+      }, 1500)
 
-  if (!res.data) {
+      dispatch({ type: SERVER_STATUS, payload: "done" })
+    } else {
+      dispatch({ type: SERVER_STATUS, payload: "wrong" })
+    }
+  } catch (err) {
+    console.error(err)
     dispatch({ type: SERVER_STATUS, payload: "error" })
-  } else if (res.data.result.token) {
-    setCookie("user", res.data.result.token, 7)
-    setTimeout(() => {
-      history.push("/")
-    }, 1500)
-
-    dispatch({ type: SERVER_STATUS, payload: "done" })
-  } else {
-    dispatch({ type: SERVER_STATUS, payload: "wrong" })
   }
 }
 
@@ -38,7 +47,7 @@ export const clearServerStatus_a = () => async dispatch => {
 
 //GET TABLES DATA
 export const getTablesData_a = () => async dispatch => {
-  const res = await axios.get("https://subs.mqg6d2hmcj.club/upload/missing.php")
+  const res = await axios.get(`https://subs.${domain}/upload/missing.php`)
 
   const filteredData = filtredDataForTables_u(res.data)
 
@@ -58,7 +67,7 @@ export const clearUploadFile_a = () => dispatch => {
 
 export const uploadToServer_a = file => async dispatch => {
   try {
-    await axios.post("https://subs.mqg6d2hmcj.club/upload/upload.php", file)
+    await axios.post(`https://subs.${domain}/upload/upload.php`, file)
     dispatch({ type: SERVER_STATUS, payload: "done" })
   } catch (err) {
     console.error(err)

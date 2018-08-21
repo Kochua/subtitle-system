@@ -10,7 +10,7 @@ const renderMovies = (items, type) => {
       <tr key={i++}>
         <th scope="row">{i}</th>
         <td>
-          <a href={`https://www.imdb.com/title/${item.id}`}>
+          <a href={`https://www.imdb.com/title/${item.id}`} target="_blank">
             <img
               style={{ width: 50, height: "auto" }}
               src={item.poster}
@@ -34,7 +34,7 @@ const renderSerials = (items, type) => {
       <tr key={i++}>
         <th scope="row">{i}</th>
         <td>
-          <a href={`https://www.imdb.com/title/${item.id}`}>
+          <a href={`https://www.imdb.com/title/${item.id}`} target="_blank">
             <img
               style={{ width: 50, height: "auto" }}
               src={item.poster}
@@ -50,7 +50,7 @@ const renderSerials = (items, type) => {
               {item.episodes.map(episode => {
                 return (
                   <tr key={episode.episodeNum}>
-                    <td>#{episode.episodeNum}</td>
+                    <td>{episode.episodeNum}</td>
                   </tr>
                 )
               })}
@@ -63,7 +63,7 @@ const renderSerials = (items, type) => {
               {item.episodes.map(episode => {
                 return (
                   <tr key={episode.episodeNum}>
-                    <td>#{episode.filename}</td>
+                    <td>{episode.filename}</td>
                   </tr>
                 )
               })}
