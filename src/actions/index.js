@@ -51,7 +51,6 @@ export const getTablesData_a = () => async dispatch => {
     const res = await axios.get(`https://subs.${domain}/upload/missing.php`)
 
     const filteredData = filtredDataForTables_u(res.data)
-
     dispatch({ type: FECHT_TABLES, payload: filteredData })
   } catch (err) {
     console.error(err)
