@@ -7,7 +7,6 @@ import Tab from "@material-ui/core/Tab"
 import Paper from "@material-ui/core/Paper"
 import * as actions from "../../actions"
 import { getCookie } from "../../utils/cookies"
-import getHostName_u from "../../utils/getHostName_u"
 
 import { TablesWrapper, TableContainer, TabsWrapper } from "./styles"
 import Movies from "./Movies"
@@ -32,8 +31,6 @@ class Dashboard extends Component {
     }
     //get data
     this.props.getTablesData_a()
-
-    console.log("HOSTNAME: ", getHostName_u())
   }
 
   handleChange = (event, value) => {
@@ -41,7 +38,7 @@ class Dashboard extends Component {
   }
 
   logoutHandler = () => {
-    document.cookie = "user" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"
+    document.cookie = "user=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"
     window.location = "/"
   }
 
@@ -76,7 +73,7 @@ class Dashboard extends Component {
                 this.logoutHandler()
               }}
             >
-              Log Out
+              Logout
             </button>
           </Paper>
         </TabsWrapper>

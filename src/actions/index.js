@@ -10,10 +10,10 @@ import {
 } from "./types"
 
 //DOMAIN NAME
-// const domain = getHostName_u()
+const domain = getHostName_u()
 
 //test domain
-const domain = "mqg6d2hmcj.club"
+// const domain = "mqg6d2hmcj.club"
 
 //LOGIN FORM
 export const submitLogin_a = (
