@@ -47,11 +47,16 @@ export const clearServerStatus_a = () => async dispatch => {
 
 //GET TABLES DATA
 export const getTablesData_a = () => async dispatch => {
-  const res = await axios.get(`https://subs.${domain}/upload/missing.php`)
+  try {
+    const res = await axios.get(`https://subs.${domain}/upload/missing.php`)
 
-  const filteredData = filtredDataForTables_u(res.data)
+    const filteredData = filtredDataForTables_u(res.data)
 
-  dispatch({ type: FECHT_TABLES, payload: filteredData })
+    dispatch({ type: FECHT_TABLES, payload: filteredData })
+  } catch (err) {
+    console.error(err)
+    dispatch({ type: FECHT_TABLES, payload: null })
+  }
 }
 
 //UPLOAD FILES
