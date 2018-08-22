@@ -32,7 +32,7 @@ export const submitLogin_a = (
 
       dispatch({ type: SERVER_STATUS, payload: "done" })
     } else {
-      dispatch({ type: SERVER_STATUS, payload: "wrong" })
+      dispatch({ type: SERVER_STATUS, payload: res.data.result.error })
     }
   } catch (err) {
     console.error(err)

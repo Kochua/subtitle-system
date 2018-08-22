@@ -1,40 +1,38 @@
-import React from "react";
-import { connect } from "react-redux";
-import { reduxForm, Field } from "redux-form";
-import { ServerAnswer } from "./styles";
-import RenderField from "./RenderField";
+import React from "react"
+import { connect } from "react-redux"
+import { reduxForm, Field } from "redux-form"
+import { ServerAnswer } from "./styles"
+import RenderField from "./RenderField"
 
 //Msg from server side setup
 const renderServerMsg = msg => {
   if (msg === "done") {
-    return <ServerAnswer color={"green"}>You Logged Succesffuly</ServerAnswer>;
-  } else if (msg === "wrong") {
-    return (
-      <ServerAnswer color={"red"}>Email or Password is incorrect</ServerAnswer>
-    );
+    return <ServerAnswer color={"green"}>You Logged Succesffuly</ServerAnswer>
+  } else if (msg === "error") {
+    return <ServerAnswer color={"red"}>Something Went Wrong!</ServerAnswer>
   } else {
-    return <ServerAnswer color={"red"}>Something went wrong</ServerAnswer>;
+    return <ServerAnswer color={"red"}>{msg}</ServerAnswer>
   }
-};
+}
 
 //Validate for Form
 const validate = values => {
-  const errors = {};
+  const errors = {}
 
   if (!values.email) {
-    errors.email = "Required";
+    errors.email = "Required"
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = "Invalid email address";
+    errors.email = "Invalid email address"
   }
 
   if (!values.password) {
-    errors.password = "Required";
+    errors.password = "Required"
   } else if (values.password.length < 4) {
-    errors.password = "Must be 4 characters or more";
+    errors.password = "Must be 4 characters or more"
   }
 
-  return errors;
-};
+  return errors
+}
 
 //main
 const Form = ({ handleSubmit, serverMsg }) => {
@@ -55,12 +53,12 @@ const Form = ({ handleSubmit, serverMsg }) => {
       </button>
       {serverMsg && renderServerMsg(serverMsg)}
     </form>
-  );
-};
+  )
+}
 
 const mapStateToProps = ({ serverMsg }) => {
-  return { serverMsg };
-};
+  return { serverMsg }
+}
 
 export default connect(mapStateToProps)(
   reduxForm({
@@ -68,4 +66,4 @@ export default connect(mapStateToProps)(
     form: "loginForm",
     destroyOnUnmount: true
   })(Form)
-);
+)
